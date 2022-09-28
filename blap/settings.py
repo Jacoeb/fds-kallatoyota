@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-3w_g6jr9_ps1szug6o0th@p24jx^+5e*!s^_5g&9#656nzy=1q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['fds-kallatoyota.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['fdslive-cli.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
