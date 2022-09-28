@@ -1,4 +1,3 @@
-from tkinter import CASCADE
 from django.db import models
 import os
 from django.contrib.auth.models import User
