@@ -1,0 +1,353 @@
+{% extends 'invoice/main.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% if request.user.account.group_user == 'User Cashier' %}
+<!-- Halaman Cashier -->
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-file-import"></i>
+            </span> Detail Invoice
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Nomor Invoice</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.no_invoice}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Tanggal Invoice</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.date_created|date:"d/m/Y"}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Nama Vendor/Supplier</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.nama_vendor}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Nominal Claim</h2>
+                    <hr>
+                    <div class="row">
+                        <p>Rp. {{nominal.nominal|floatformat:0|intcomma}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Deskripsi</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.deskripsi}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Email Notifikasi</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.email}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Total Bayar</h2>
+                    <hr>
+                    <div class="row">
+                        <p>Rp. {{bayar|floatformat:0|intcomma}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Daftar Potongan</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th> Jenis Potongan </th>
+                                    <th> Nama Rekening </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Potongan Pajak</td>
+                                    <td>{{invoice.pot_pajak|floatformat:0|intcomma}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Daftar Bank</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th> Nomor Rekening </th>
+                                    <th> Nama Rekening </th>
+                                    <th> Nama Bank </th>
+                                    <th> Nominal </th>
+                                    <th> Biaya Admin </th>
+                                    <th> Bayar </th>
+                                    {% if invoice.status == 'Invoice' %}
+                                    <th> Action </th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for bank in bank %}
+                                <tr>
+                                    <td>{{bank.no_rekening}}</td>
+                                    <td>{{bank.nama_rekening}}</td>
+                                    <td>{{bank.nama_bank}}</td>
+                                    <td>{{bank.nominal|floatformat:0|intcomma}}</td>
+                                    <td>{{bank.biaya_admin|floatformat:0|intcomma}}</td>
+                                    <td>{{bayar|floatformat:0|intcomma}}</td>
+                                    {% if invoice.status == 'Invoice' %}
+                                    <td>
+                                        <a href="{% url 'add_biaya_admin' bank.id%}"><button type="button"
+                                                class="btn btn-inverse-primary btn-rounded btn-icon" title="Delete"><i
+                                                    class="mdi mdi-pencil"></i></button></a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Halaman Cashier -->
+{% else %}
+<!-- Halaman Department -->
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-file-import"></i>
+            </span> Detail List Of Claim
+        </h3>
+        {% if invoice.status == 'List Of Claim' %}
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'add_bank' invoice.id %}" type="button"
+                        class="btn btn-gradient-primary btn-icon-text">
+                        <i class="mdi mdi-plus btn-icon-prepend"></i> Tambah Bank </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Nomor Invoice</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.no_invoice}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Vendor/Supplier</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.nama_vendor}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Nominal</h2>
+                    <hr>
+                    <div class="row">
+                        <p>Rp. {{nominal.nominal|floatformat:0|intcomma}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Total Bayar</h2>
+                    <hr>
+                    <div class="row">
+                        <p>Rp. {{bayar|floatformat:0|intcomma}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Deskripsi</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.deskripsi}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Email Notifikasi</h2>
+                    <hr>
+                    <div class="row">
+                        <p>{{invoice.email}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Daftar Potongan</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th> Jenis Potongan </th>
+                                    <th> Nama Rekening </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Potongan Pajak</td>
+                                    <td>{{invoice.pot_pajak|floatformat:0|intcomma}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Daftar Bank</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th> Nomor Rekening </th>
+                                    <th> Nama Rekening </th>
+                                    <th> Nama Bank </th>
+                                    <th> Nominal </th>
+                                    <th> Biaya Admin </th>
+                                    <th> Bayar </th>
+                                    {% if invoice.status == 'List Of Claim' %}
+                                    <th> Action </th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for bank in bank %}
+                                <tr>
+                                    <td>{{bank.no_rekening}}</td>
+                                    <td>{{bank.nama_rekening}}</td>
+                                    <td>{{bank.nama_bank}}</td>
+                                    <td>{{bank.nominal|floatformat:0|intcomma}}</td>
+                                    <td>{{bank.biaya_admin|floatformat:0|intcomma}}</td>
+                                    <td>{{bank.total_bayar|floatformat:0|intcomma}}</td>
+                                    {% if invoice.status == 'List Of Claim' %}
+                                    <td>
+
+                                        <a href="{% url 'update_bank' bank.id %}"><button type="button"
+                                                class="btn btn-inverse-warning btn-rounded btn-icon" title="Update"><i
+                                                    class="mdi mdi-pencil"></i></button></a>
+
+                                        <a href="{% url 'delete_bank' bank.id %}"><button type="button"
+                                                onclick="return confirm('Are you sure want to delete this claim?')"
+                                                class="btn btn-inverse-danger btn-rounded btn-icon" title="Delete"><i
+                                                    class="mdi mdi-delete"></i></button></a>
+
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    {% if invoice.status == 'List Of Claim' %}
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{form.estimasi_bayar}}
+                        <input type="hidden" name="nominal" value="{{nominal.nominal}}">
+                        <button type="submit" class="btn btn-inverse-primary btn-icon-text"><i
+                                class="mdi mdi-check btn-icon-prepend"></i>
+                            Apply</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Halaman Deppartment -->
+{% endif %}
+{% endblock %}

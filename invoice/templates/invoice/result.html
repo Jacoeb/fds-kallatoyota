@@ -1,0 +1,161 @@
+{% extends 'invoice/main.html' %}
+{% load humanize %}
+{% block content %}
+{% if request.user.account.group_user == 'User Invoice' %}
+<!-- Halaman Result Report Invoice -->
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-file-import"></i>
+            </span> {{title}}
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{table_title}}</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable1">
+                            <thead>
+                                <tr>
+                                    <th> Department </th>
+                                    <th> Nomor List Of Claim </th>
+                                    <th> Vendor </th>
+                                    <th> Deskripsi </th>
+                                    <th> Nominal Claim </th>
+                                    <th> Tipe Transaksi </th>
+                                    <th> Created </th>
+                                    <th> Invoice Create </th>
+                                    <th> Estimasi Bayar </th>
+                                    <th> Invoice Oracle </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for invoice in invoices %}
+                                <tr>
+                                    <td>{{invoice.user.get_full_name}}</td>
+                                    <td>{{invoice.no_invoice}}</td>
+                                    <td>{{invoice.nama_vendor}}</td>
+                                    <td>{{invoice.deskripsi}}</td>
+                                    <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                                    <td>{{invoice.tipe}}</td>
+                                    <td>{{invoice.date_created|date:"d/m/Y"}}</td>
+                                    <td>{{invoice.invoice_create_date|date:"d/m/Y"}}</td>
+                                    <td>{{invoice.estimasi_bayar|date:"d/m/Y"}}</td>
+                                    <td>{{invoice.invoice_date|date:"d/m/Y"}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Halaman Result Report Invoice -->
+{% elif request.user.account.group_user == 'User Cashier' %}
+<!-- Halaman Result Report Cashier -->
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-file-import"></i>
+            </span> {{title}}
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{table_title}}</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable1">
+                            <thead>
+                                <tr>
+                                    <th> Nomor List Of Claim </th>
+                                    <th> Vendor </th>
+                                    <th> Nominal Claim </th>
+                                    <th> Pajak </th>
+                                    <th> Admin Bank </th>
+                                    <th> Bayar </th>
+                                    <th> Invoice Create </th>
+                                    <th> MCM Create </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for invoice in invoices %}
+                                <tr>
+                                    <td>{{invoice.no_invoice}}</td>
+                                    <td>{{invoice.nama_vendor}}</td>
+                                    <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                                    <td>{{invoice.pot_pajak|floatformat:0|intcomma}}</td>
+                                    <td>{{invoice.pot_bank|floatformat:0|intcomma}}</td>
+                                    <td>{{invoice.bayar|floatformat:0|intcomma}}</td>
+                                    <td>{{invoice.invoice_create_date|date:"d/m/Y"}}</td>
+                                    <td>{{invoice.mcm_date|date:"d/m/Y"}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Halaman Result Report Cashier -->
+{% elif request.user.account.group_user == 'User Payment' %}
+<!-- Halaman Result Report Payment -->
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-file-import"></i>
+            </span> {{title}}
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{table_title}}</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable1">
+                            <thead>
+                                <tr>
+                                    <th> Nomor List Of Claim </th>
+                                    <th> Vendor/Supplier </th>
+                                    <th> Nominal Claim </th>
+                                    <th> MCM Create </th>
+                                    <th> Payment Oracle </th>
+                                    <th> Payment Create </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for invoice in invoices %}
+                                <tr>
+                                    <td>{{invoice.no_invoice}}</td>
+                                    <td>{{invoice.nama_vendor}}</td>
+                                    <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                                    <td>{{invoice.mcm_date|date:"d/m/Y"}}</td>
+                                    <td>{{invoice.payment_date|date:"d/m/Y"}}</td>
+                                    <td>{{invoice.payment_create_date|date:"d/m/Y"}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Halaman Result Report Payment -->
+{% endif %}
+{% endblock %}

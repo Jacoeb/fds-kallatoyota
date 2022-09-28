@@ -1,0 +1,73 @@
+{% extends 'invoice/main.html' %}
+{% block content %}
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-file-import"></i>
+            </span> {{title}}
+        </h3>
+    </div>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            {% if request.user.account.group_user == 'User Invoice' %}
+            <!-- Post Potongan Pajak (Admin Invoice) -->
+            <div class="card-body">
+                <form method="post" class="forms-sample">
+                    {% csrf_token %}
+                    <div class=" form-group">
+                        <label>Tanggal Invoice</label>
+                        {{form.invoice_date}}
+                    </div>
+                    <div class=" form-group">
+                        <label>Potongan Pajak</label>
+                        {{form.pot_pajak}}
+                    </div>
+                    <div class=" form-group">
+                        <label>Tipe Transaksi</label>
+                        {{form.tipe}}
+                    </div>
+                    <div class=" form-group">
+                        <label>Jenis Transaksi</label>
+                        {{form.jenis}}
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary me-2">Apply</button>
+                    <button type="button" onclick="history.back()" class="btn btn-light">Cancel</button>
+                </form>
+            </div>
+            <!-- end post pajak -->
+            {% elif request.user.account.group_user == 'User Payment' %}
+            <!-- Post Payment (Payment) -->
+            <div class="card-body">
+                <form method="post" class="forms-sample" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.payment_create_date}}
+                    <input type="hidden" name="id_invoice" value="{{invoice.id}}">
+                    <input type="hidden" name="status" value="Payment">
+                    <div class=" form-group">
+                        <label for="exampleInputName1">Nomor Payment Oracle</label>
+                        {{form.no_payment}}
+                    </div>
+                    <div class=" form-group">
+                        <label for="exampleInputName1">Tanggal Payment</label>
+                        {{form.payment_date}}
+                    </div>
+                    <div class="form-group">
+                        <label for="">Bukti Transfer</label>
+                        {% if invoice.get_buktitransfer_url != None %}
+                        <p style="font-size: 11px ;">
+                            Currently : <a href="{{invoice.get_buktitransfer_url}}" download>{{lampiran}}</a>
+                        </p>
+                        {% endif %}
+                        {{form.buktitransfer}}
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary me-2">Apply</button>
+                    <button type="button" class="btn btn-light" onclick="history.back()">Cancel</button>
+                </form>
+            </div>
+            <!-- end post payment -->
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

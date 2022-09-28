@@ -1,0 +1,271 @@
+{% extends 'invoice/main.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% if request.user.is_superuser %}
+<!-- Halaman SuperUser -->
+<div class="content-wrapper">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white me-2">
+        <i class="mdi mdi-file-import"></i>
+      </span>
+      List Of Claim
+    </h3>
+    <nav aria-label="breadcrumb">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">
+          <a href="{% url 'add_invoice' %}" type="button" class="btn btn-gradient-primary btn-icon-text">
+            <i class="mdi mdi-plus btn-icon-prepend"></i> Tambah
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="col-12 grid-margin">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recent List Of Claim</h4>
+          <div class="table-responsive">
+            <table class="table table-hover" id="myTable1">
+              <thead>
+                <tr>
+                  <th>Department</th>
+                  <th>Nomor List Of Claim</th>
+                  <th>Vendor/Supplier</th>
+                  <th>Deskripsi</th>
+                  <th>Nominal</th>
+                  <th>Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for invoice in invoice %}
+                <tr>
+                  <td>{{invoice.user.get_full_name}}</td>
+                  <td>{{invoice.no_invoice}}</td>
+                  <td>{{invoice.nama_vendor}}</td>
+                  <td>{{invoice.deskripsi}}</td>
+                  <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                  <td>{{invoice.date_created|date:"d/m/Y"}}</td>
+                  <td>
+                    <a href="{% url 'update_invoice' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon" title="Update">
+                        <i class="mdi mdi-pencil"></i></button></a>
+                    <a href="{% url 'delete_invoice' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-danger btn-rounded btn-icon" title="Delete"
+                        onclick="return confirm('Are you sure want to delete this claim?')">
+                        <i class="mdi mdi-delete"></i></button></a>
+                    <a href="{{invoice.get_attachment_url}}" download><button type="button"
+                        class="btn btn-inverse-info btn-rounded btn-icon" title="Download">
+                        <i class="mdi mdi-download"></i></button></a>
+                    <a href="{% url 'post_tipe' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon" title="Detail">
+                        <i class="mdi mdi-check"></i></button></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Halaman SuperUser -->
+{% elif request.user.account.group_user == 'User Invoice' %}
+<!-- Halaman Admin Invoice -->
+<div class="content-wrapper">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white me-2">
+        <i class="mdi mdi-file-import"></i>
+      </span> List Of Claim
+    </h3>
+    <nav aria-label="breadcrumb">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">
+          <a href="{% url 'add_invoice_admin' %}" type="button" class="btn btn-gradient-primary btn-icon-text">
+            <i class="mdi mdi-plus btn-icon-prepend"></i> Tambah </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="col-12 grid-margin">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recent List Of Claim</h4>
+          <div class="table-responsive">
+            <table class="table table-hover" id="myTable1">
+              <thead>
+                <tr>
+                  <th> Department </th>
+                  <th> Nomor List Of Claim </th>
+                  <th> Vendor/Supplier </th>
+                  <th> Deskripsi </th>
+                  <th> Nominal Claim </th>
+                  <th> Created </th>
+                  <th> Action </th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for invoice in invoice %}
+                <tr>
+                  <td>{{invoice.user.get_full_name}}</td>
+                  <td>{{invoice.no_invoice}}</td>
+                  <td>{{invoice.nama_vendor}}</td>
+                  <td>{{invoice.deskripsi}}</td>
+                  <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                  <td>{{invoice.date_created|date:"d/m/Y"}}</td>
+                  <td><a href="{% url 'update_invoice_admin' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon" title="Update"><i
+                          class="mdi mdi-pencil"></i></button></a>
+                    <a href="{% url 'delete_invoice_admin' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-danger btn-rounded btn-icon" title="Delete"
+                        onclick="return confirm('Are you sure want to delete this claim?')"><i
+                          class="mdi mdi-delete"></i></button></a>
+                    <a href="{{invoice.get_attachment_url}}" download><button type="button"
+                        class="btn btn-inverse-info btn-rounded btn-icon" title="Download"><i
+                          class="mdi mdi-download"></i></button></a>
+                    <a href="{% url 'post_tipe' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-secondary btn-rounded btn-icon" title="Done"><i
+                          class="mdi mdi-check"></i></button></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Halaman Admin Invoice -->
+{% elif request.user.account.group_user == 'User Cashier' %}
+<!-- Halaman Cashier -->
+<div class="content-wrapper">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white me-2">
+        <i class="mdi mdi-file-import"></i>
+      </span> Invoice
+    </h3>
+    <nav aria-label="breadcrumb">
+      <!-- <ul class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'add_invoice_admin' %}" type="button"
+                      class="btn btn-gradient-primary btn-icon-text">
+                      <i class="mdi mdi-plus btn-icon-prepend"></i> Tambah </a>
+              </li>
+          </ul> -->
+    </nav>
+  </div>
+  <div class="row">
+    <div class="col-12 grid-margin">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recent List Of Claim</h4>
+          <div class="table-responsive">
+            <table class="table table-hover" id="myTable1">
+              <thead>
+                <tr>
+                  <th> Department </th>
+                  <th> Nomor List Of Claim </th>
+                  <th> Vendor/Supplier </th>
+                  <th> Deskripsi </th>
+                  <th> Nominal Claim </th>
+                  <th> Created </th>
+                  <th> Action </th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for invoice in invoice %}
+                <tr>
+                  <td>{{invoice.user.get_full_name}}</td>
+                  <td>{{invoice.no_invoice}}</td>
+                  <td>{{invoice.nama_vendor}}</td>
+                  <td>{{invoice.deskripsi}}</td>
+                  <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                  <td>{{invoice.date_created|date:"d/m/Y"}}</td>
+                  <td><a href="{% url 'detail_mcm' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon" title="Detail"><i
+                          class="mdi mdi-magnify"></i></button></a>
+                    <a href="{{invoice.get_attachment_url}}" download><button type="button"
+                        class="btn btn-inverse-info btn-rounded btn-icon" title="Download"><i
+                          class="mdi mdi-download"></i></button></a>
+                    <a href="{% url 'post_mcm' invoice.id %}"><button type="button"
+                        onclick="return confirm('Anda Yakin Mau Konfirmasi Invoice ini?')"
+                        class="btn btn-inverse-secondary btn-rounded btn-icon" title="Done"><i
+                          class="mdi mdi-check"></i></button></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Halaman Cashier -->
+{% elif request.user.account.group_user == 'User Payment' %}
+<!-- Halaman Payment -->
+<div class="content-wrapper">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white me-2">
+        <i class="mdi mdi-file-import"></i>
+      </span>
+      Payment
+    </h3>
+  </div>
+  <div class="row">
+    <div class="col-12 grid-margin">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recent List Of Claim</h4>
+          <div class="table-responsive">
+            <table class="table table-hover" id="myTable1">
+              <thead>
+                <tr>
+                  <th>Vendor/Supplier</th>
+                  <th>Deskripsi</th>
+                  <th>Nomor List Of Claim</th>
+                  <th>Nominal</th>
+                  <th>Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for invoice in invoice %}
+                <tr>
+                  <td>{{invoice.nama_vendor}}</td>
+                  <td>{{invoice.deskripsi}}</td>
+                  <td>{{invoice.no_invoice}}</td>
+                  <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                  <td>{{invoice.date_created|date:"d/m/Y"}}</td>
+                  <td>
+                    <a href="{% url 'post_payment' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon" title="Detail">
+                        <i class="mdi mdi-check"></i></button></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Halaman Payment -->
+{% endif %}
+{% endblock %}

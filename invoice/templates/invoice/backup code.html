@@ -1,0 +1,13 @@
+{% if invoice.kompensasi %}
+<div class="form-check form-check-flat form-check-primary">
+    <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" checked="checked" value="{{invoice.id}}" name="id_kompensasi">
+        Kompensasi </label>
+</div>
+{% else %}
+<div class="form-check form-check-flat form-check-primary">
+    <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" value="{{invoice.id}}" name="id_kompensasi">
+        Kompensasi </label>
+</div>
+{% endif %}

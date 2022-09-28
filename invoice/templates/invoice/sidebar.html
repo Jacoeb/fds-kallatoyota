@@ -1,0 +1,130 @@
+{% load static %}
+<!-- partial:partials/_sidebar.html -->
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+
+        <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+                <div class="nav-profile-image">
+                    <img src="{% static 'assets/images/faces/face1.jpg' %}" alt="profile">
+                    <span class="login-status online"></span>
+                    <!--change to offline or busy as needed-->
+                </div>
+                <div class="nav-profile-text d-flex flex-column">
+                    <span class="font-weight-bold mb-2">
+                        {{request.user.get_full_name}}
+                    </span>
+                </div>
+            </a>
+        </li>
+
+        {% if request.user.is_superuser %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">
+                <span class="menu-title">Dashboard</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'invoice' %}">
+                <span class="menu-title">Invoice</span>
+                <i class="mdi mdi mdi-file-import menu-icon"></i>
+            </a>
+        </li>
+
+        {% elif request.user.account.group_user == 'User Invoice' %}
+
+        <!-- Menu Admin Invoice -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard_invoice' %}">
+                <span class="menu-title">Home</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'invoicing' %}">
+                <span class="menu-title">Invoice</span>
+                <i class="mdi mdi mdi-file-import menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'report_invoice' %}">
+                <span class="menu-title">Report</span>
+                <i class="mdi mdi-file-pdf menu-icon"></i>
+            </a>
+        </li>
+        <!-- End Menu Invoive -->
+
+        {% elif request.user.account.group_user == 'User Cashier' %}
+
+        <!-- Menu Admin Cashier -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard_cashier' %}">
+                <span class="menu-title">Home</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'mcm' %}">
+                <span class="menu-title">MCM</span>
+                <i class="mdi mdi mdi-file-import menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'report_mcm' %}">
+                <span class="menu-title">Report</span>
+                <i class="mdi mdi-file-pdf menu-icon"></i>
+            </a>
+        </li>
+        <!-- End Menu Cashier -->
+
+        {% elif request.user.account.group_user == 'User Payment' %}
+
+        <!-- Menu Admin Payment -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard_payment' %}">
+                <span class="menu-title">Home</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'payment' %}">
+                <span class="menu-title">Payment</span>
+                <i class="mdi mdi mdi-file-import menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'report_payment' %}">
+                <span class="menu-title">Report</span>
+                <i class="mdi mdi-file-pdf menu-icon"></i>
+            </a>
+        </li>
+        <!-- End Menu Cashier -->
+
+        {% else %}
+
+        <!-- Menu User -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard_user' %}">
+                <span class="menu-title">Home</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'listofclaim' %}">
+                <span class="menu-title">List Of Claim</span>
+                <i class="mdi mdi mdi-file-import menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <span class="menu-title">Report</span>
+                <i class="mdi mdi-file-pdf menu-icon"></i>
+            </a>
+        </li>
+        <!-- End Menu User -->
+        {% endif %}
+
+    </ul>
+</nav>
+<!-- partial -->

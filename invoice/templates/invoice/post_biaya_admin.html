@@ -1,0 +1,31 @@
+{% extends 'invoice/main.html' %}
+{% block content %}
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-file-import"></i>
+            </span> {{title}}
+        </h3>
+    </div>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            {% if request.user.account.group_user == 'User Cashier' %}
+            <!-- Post Potongan Bank (Cashier) -->
+            <div class="card-body">
+                <form method="post" class="forms-sample">
+                    {% csrf_token %}
+                    <div class=" form-group">
+                        <label for="exampleInputName1">Potongan Admin Bank</label>
+                        {{form.biaya_admin}}
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary me-2">Apply</button>
+                    <button type="button" onclick="history.back()" class="btn btn-light">Cancel</button>
+                </form>
+            </div>
+            <!-- end post Bank -->
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
