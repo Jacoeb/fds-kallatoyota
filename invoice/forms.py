@@ -127,7 +127,6 @@ class InvoiceFormUser(ModelForm):
             'attachment': forms.FileInput(
                 attrs={
                     'class': 'form-control',
-                    'required': 'required',
                 }
             ),
             'email': forms.EmailInput(
