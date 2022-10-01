@@ -15,21 +15,29 @@
             <div class="card-body">
                 <form method="post" class="forms-sample">
                     {% csrf_token %}
-                    <div class=" form-group">
-                        <label>Tanggal Invoice</label>
-                        {{form.invoice_date}}
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Tanggal Invoice</label>
+                        <div class="col-sm-2">
+                            {{form.invoice_date}}
+                        </div>
                     </div>
-                    <div class=" form-group">
-                        <label>Potongan Pajak</label>
-                        {{form.pot_pajak}}
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Potongan Pajak</label>
+                        <div class="col-sm-2">
+                            {{form.pot_pajak}}
+                        </div>
                     </div>
-                    <div class=" form-group">
-                        <label>Tipe Transaksi</label>
-                        {{form.tipe}}
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Tipe Transaksi</label>
+                        <div class="col-sm-2">
+                            {{form.tipe}}
+                        </div>
                     </div>
-                    <div class=" form-group">
-                        <label>Jenis Transaksi</label>
-                        {{form.jenis}}
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Jenis Transaksi</label>
+                        <div class="col-sm-2">
+                            {{form.jenis}}
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-gradient-primary me-2">Apply</button>
                     <button type="button" onclick="history.back()" class="btn btn-light">Cancel</button>
@@ -44,22 +52,28 @@
                     {{form.payment_create_date}}
                     <input type="hidden" name="id_invoice" value="{{invoice.id}}">
                     <input type="hidden" name="status" value="Payment">
-                    <div class=" form-group">
-                        <label for="exampleInputName1">Nomor Payment Oracle</label>
-                        {{form.no_payment}}
+                    <div class=" form-group row">
+                        <label class="col-sm-2 col-form-label">Nomor Payment Oracle</label>
+                        <div class="col-sm-2">
+                            {{form.no_payment}}
+                        </div>
                     </div>
-                    <div class=" form-group">
-                        <label for="exampleInputName1">Tanggal Payment</label>
-                        {{form.payment_date}}
+                    <div class=" form-group row">
+                        <label class="col-sm-2 col-form-label">Tanggal Payment</label>
+                        <div class="col-sm-2">
+                            {{form.payment_date}}
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="">Bukti Transfer</label>
-                        {% if invoice.get_buktitransfer_url != None %}
-                        <p style="font-size: 11px ;">
-                            Currently : <a href="{{invoice.get_buktitransfer_url}}" download>{{lampiran}}</a>
-                        </p>
-                        {% endif %}
-                        {{form.buktitransfer}}
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Bukti Transfer</label>
+                        <div class="col-sm-4">
+                            {% if invoice.get_buktitransfer_url != None %}
+                            <p style="font-size: 11px ;">
+                                Currently : <a href="{{invoice.get_buktitransfer_url}}" download>{{lampiran}}</a>
+                            </p>
+                            {% endif %}
+                            {{form.buktitransfer}}
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-gradient-primary me-2">Apply</button>
                     <button type="button" class="btn btn-light" onclick="history.back()">Cancel</button>
