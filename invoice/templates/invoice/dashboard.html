@@ -395,6 +395,80 @@
     </div>
 </div>
 <!-- End Halaman Payroll -->
+{% elif request.user.account.group_user == 'User Accounting' %}
+<!-- Halaman Accounting -->
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+            </span> Dashboard
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-primary card-img-holder text-white">
+                <div class="card-body">
+                    <img class="card-img-absolute" src="{% static 'invoice/assets/images/dashboard/circle.svg' %}"
+                        alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Total</h4>
+                    <h2 class="mb-5">{{total_invoice}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 stretch-card grid-margin">
+            <div class="card bg-info card-img-holder text-white">
+                <div class="card-body">
+                    <img class="card-img-absolute" src="{% static 'invoice/assets/images/dashboard/circle.svg' %}"
+                        alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">List Of Claim</h4>
+                    <h2 class="mb-5">{{listofclaim}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 stretch-card grid-margin">
+            <div class="card bg-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{% static 'invoice/assets/images/dashboard/circle.svg' %}" class="card-img-absolute"
+                        alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Invoice</h4>
+                    <h2 class="mb-5">{{invoicing}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 stretch-card grid-margin">
+            <div class="card bg-warning card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{% static 'invoice/assets/images/dashboard/circle.svg' %}" class="card-img-absolute"
+                        alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">MCM</h4>
+                    <h2 class="mb-5">{{mcm}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 stretch-card grid-margin">
+            <div class="card bg-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="{% static 'invoice/assets/images/dashboard/circle.svg' %}" class="card-img-absolute"
+                        alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Payment</h4>
+                    <h2 class="mb-5">{{payment}}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Recent List Of Claim</h4>
+                    <p>{{department}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Halaman Accounting -->
 {% else %}
 <!-- Halaman User Department -->
 <div class="content-wrapper">

@@ -99,11 +99,11 @@
                 <i class="mdi mdi-file-pdf menu-icon"></i>
             </a>
         </li>
-        <!-- End Menu Cashier -->
+        <!-- End Menu Payment -->
 
         {% elif request.user.account.group_user == 'User Payroll' %}
 
-        <!-- Menu Admin Payment -->
+        <!-- Menu Admin Payroll -->
         <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard_payroll' %}">
                 <span class="menu-title">Home</span>
@@ -122,7 +122,30 @@
                 <i class="mdi mdi-file-pdf menu-icon"></i>
             </a>
         </li>
-        <!-- End Menu Cashier -->
+        <!-- End Menu Payroll -->
+
+        {% elif request.user.account.group_user == 'User Accounting' %}
+
+        <!-- Menu Admin Accounting -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard_accounting' %}">
+                <span class="menu-title">Home</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounting' %}">
+                <span class="menu-title">Kompensasi</span>
+                <i class="mdi mdi mdi-file-import menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'report_accounting' %}">
+                <span class="menu-title">Report</span>
+                <i class="mdi mdi-file-pdf menu-icon"></i>
+            </a>
+        </li>
+        <!-- End Menu Accounting -->
 
         {% else %}
 

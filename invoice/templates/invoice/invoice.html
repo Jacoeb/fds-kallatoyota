@@ -332,5 +332,70 @@
   </div>
 </div>
 <!-- End Halaman Payroll -->
+{% elif request.user.account.group_user == 'User Accounting' %}
+<!-- Halaman Payroll -->
+<div class="content-wrapper">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white me-2">
+        <i class="mdi mdi-file-import"></i>
+      </span> List Of Claim
+    </h3>
+    <nav aria-label="breadcrumb">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">
+          <a href="{% url 'add_invoice_admin' %}" type="button" class="btn btn-gradient-primary btn-icon-text">
+            <i class="mdi mdi-plus btn-icon-prepend"></i> Tambah </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="col-12 grid-margin">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recent List Of Claim</h4>
+          <div class="table-responsive">
+            <table class="table table-hover" id="myTable1">
+              <thead>
+                <tr>
+                  <th> Department </th>
+                  <th> Nomor List Of Claim </th>
+                  <th> Vendor/Supplier </th>
+                  <th> Deskripsi </th>
+                  <th> Nominal Claim </th>
+                  <th> Created </th>
+                  <th> Action </th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for invoice in invoice %}
+                <tr>
+                  <td>{{invoice.user.get_full_name}}</td>
+                  <td>{{invoice.no_invoice}}</td>
+                  <td>{{invoice.nama_vendor}}</td>
+                  <td>{{invoice.deskripsi}}</td>
+                  <td>{{invoice.nominal|floatformat:0|intcomma}}</td>
+                  <td>{{invoice.date_created|date:"d/m/Y"}}</td>
+                  <td>
+                    <a href="{{invoice.get_attachment_url}}" download><button type="button"
+                        class="btn btn-inverse-info btn-rounded btn-icon" title="Attachment"><i
+                          class="mdi mdi-file-document"></i></button></a>
+                    <a href="{% url 'post_tipe' invoice.id %}"><button type="button"
+                        class="btn btn-inverse-secondary btn-rounded btn-icon" title="Done"><i
+                          class="mdi mdi-check"></i></button></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Halaman Payroll -->
 {% endif %}
 {% endblock %}

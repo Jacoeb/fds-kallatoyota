@@ -726,6 +726,72 @@ def resultPayroll(request):
 # End Payroll
 
 
+# Accounting
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['accounting'])
+def dashboardAccounting(request):
+    department = request.user.username
+    invoices = Invoice.objects.all()
+
+    total_invoice = invoices.count()
+    listofclaim = invoices.filter(status='List Of Claim').count()
+    invoicing = invoices.filter(status='Invoice').count()
+    mcm = invoices.filter(status='MCM').count()
+    payment = invoices.filter(status='Payment').count()
+    context = {
+        'invoice': invoices,
+        'total_invoice': total_invoice,
+        'listofclaim': listofclaim,
+        'invoicing': invoicing,
+        'mcm': mcm,
+        'payment': payment,
+        'department': department,
+    }
+    return render(request, 'invoice/dashboard.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['accounting'])
+def accounting(request):
+    invoices = Invoice.objects.filter(status='Kompensasi')
+    # print ('invoice :',invoice)
+    form = TipePostForm()
+
+    context = {
+        'invoice': invoices,
+        'form': form,
+    }
+    return render(request, 'invoice/invoice.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['accounting'])
+def reportAccounting(request):
+    context = {
+        'title': 'Report Kompensasi',
+    }
+    return render(request, 'invoice/report.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['accounting'])
+def resultAccounting(request):
+    tanggal_mulai = request.POST.get('tanggal_mulai')
+    tanggal_akhir = request.POST.get('tanggal_akhir')
+    invoices = Invoice.objects.filter(
+        payment_date__range=[tanggal_mulai, tanggal_akhir])
+    # print(tanggal_mulai, tanggal_akhir, invoices)
+    context = {
+        'title': 'Result Kompensasi',
+        'table_title': 'Daftar Kompensasi',
+        'invoices': invoices,
+        'tanggal_mulai': tanggal_mulai,
+        'tanggal_akhir': tanggal_akhir,
+    }
+    return render(request, 'invoice/result.html', context)
+# End Accounting
+
+
 # View superuser
 @ login_required(login_url='login')
 @ admin_only
