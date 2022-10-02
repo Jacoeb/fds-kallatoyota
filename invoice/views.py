@@ -131,8 +131,8 @@ def add_listofclaim(request):
     return render(request, 'invoice/invoice_form.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['user_dept'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['user_dept'])
 def update_listofclaim(request, pk):
     invoice = Invoice.objects.get(id=pk)
     lampiran = invoice.attachment
@@ -362,7 +362,7 @@ def post_tipe(request, pk):
                 pot_pajak=potongan, status='Kompensasi', jenis=jenis, tipe=tipe, bayar=bayar, invoice_date=invoice_date, invoice_create_date=today)
         elif jenis == 'Payroll':
             Invoice.objects.filter(id=pk).update(
-                pot_pajak=potongan, status='MCM', jenis=jenis, tipe=tipe, bayar=bayar, invoice_date=invoice_date, invoice_create_date=today)
+                pot_pajak=potongan, status='Payroll', jenis=jenis, tipe=tipe, bayar=bayar, invoice_date=invoice_date, invoice_create_date=today)
         else:
             Invoice.objects.filter(id=pk).update(
                 pot_pajak=potongan, status='Invoice', jenis=jenis, tipe=tipe, bayar=bayar, invoice_date=invoice_date, invoice_create_date=today)
@@ -682,6 +682,47 @@ def dashboardPayroll(request):
         'department': department,
     }
     return render(request, 'invoice/dashboard.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['payroll'])
+def payroll(request):
+    invoices = Invoice.objects.filter(status='Payroll')
+    # print ('invoice :',invoice)
+    form = TipePostForm()
+
+    context = {
+        'invoice': invoices,
+        'form': form,
+    }
+    return render(request, 'invoice/invoice.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['payroll'])
+def reportPayroll(request):
+    context = {
+        'title': 'Report Payroll'
+    }
+    return render(request, 'invoice/report.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['payroll'])
+def resultPayroll(request):
+    tanggal_mulai = request.POST.get('tanggal_mulai')
+    tanggal_akhir = request.POST.get('tanggal_akhir')
+    invoices = Invoice.objects.filter(
+        payment_date__range=[tanggal_mulai, tanggal_akhir])
+    # print(tanggal_mulai, tanggal_akhir, invoices)
+    context = {
+        'title': 'Result Payroll',
+        'table_title': 'Daftar Payroll',
+        'invoices': invoices,
+        'tanggal_mulai': tanggal_mulai,
+        'tanggal_akhir': tanggal_akhir,
+    }
+    return render(request, 'invoice/result.html', context)
 # End Payroll
 
 

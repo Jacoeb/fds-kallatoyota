@@ -49,6 +49,7 @@ urlpatterns = [
 
     # Admin Payroll
     path('admin_payroll/', views.dashboardPayroll, name='dashboard_payroll'),
+    path('payroll/', views.payroll, name='payroll'),
 
     # SuperUser
     path('invoice/', views.invoice, name='invoice'),
@@ -75,9 +76,11 @@ urlpatterns = [
     path('invoicing/report/', views.reportInvoice, name='report_invoice'),
     path('mcm/report/', views.reportMCM, name='report_mcm'),
     path('payment/report/', views.reportPayment, name='report_payment'),
+    path('payroll/report/', views.reportPayroll, name='report_payroll'),
 
     # Result
     path('result/invoice/', views.resultInvoice, name='result_invoice'),
     path('result/mcm/', views.resultMCM, name='result_mcm'),
     path('result/payment/', views.resultPayment, name='result_payment'),
+    path('result/payroll/', views.resultPayroll, name='result_payroll'),
 ]

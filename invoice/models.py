@@ -63,7 +63,7 @@ class Invoice(models.Model):
         ('Payroll', 'Payroll'),
     )
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    no_invoice = models.CharField(max_length=255, null=True)
+    no_invoice = models.CharField(max_length=255, null=True, unique=True)
     status = models.CharField(max_length=255, null=True, choices=STATUS)
     tipe = models.CharField(max_length=255, null=True, choices=TIPE)
     no_pr = models.CharField(max_length=255, null=True, blank=True)
