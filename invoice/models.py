@@ -17,6 +17,12 @@ def file_path_buktitransfer(instance, filename):
     return os.path.join(path, format)
 
 
+def file_path_filecsv(instance, filename):
+    path = "filecsv/"
+    format = "filecsv-" + filename
+    return os.path.join(path, format)
+
+
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     group_user = models.CharField(
@@ -26,6 +32,8 @@ class Account(models.Model):
             ('User Invoice', 'User Invoice'),
             ('User Cashier', 'User Cashier'),
             ('User Payment', 'User Payment'),
+            ('User Payroll', 'User Payroll'),
+            ('User Kompensasi', 'User Kompensasi'),
         ]
     )
 
@@ -41,6 +49,7 @@ class Invoice(models.Model):
         ('Payment', 'Payment'),
         ('Kompensasi', 'Kompensasi'),
         ('Payment Cabang', 'Payment Cabang'),
+        ('Payroll', 'Payroll'),
     )
 
     TIPE = (
@@ -77,8 +86,10 @@ class Invoice(models.Model):
     payment_create_date = models.DateField(null=True, blank=True)
     buktitransfer = models.FileField(
         upload_to=file_path_buktitransfer, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
     estimasi_bayar = models.DateField(null=True, blank=True)
+    filecsv = models.FileField(
+        upload_to=file_path_filecsv, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
     date_updated = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
@@ -93,6 +104,11 @@ class Invoice(models.Model):
     def get_buktitransfer_url(self):
         if self.buktitransfer and hasattr(self.buktitransfer, 'url'):
             return self.buktitransfer.url
+
+    @property
+    def get_filecsv_url(self):
+        if self.filecsv and hasattr(self.filecsv, 'url'):
+            return self.filecsv.url
 
 
 class Department(models.Model):
