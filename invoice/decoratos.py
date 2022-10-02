@@ -46,6 +46,9 @@ def admin_only(view_func):
         if group == 'payment':
             return redirect('dashboard_payment')
 
+        if group == 'payroll':
+            return redirect('dashboard_payroll')
+
         if group == 'superadmin':
             return view_func(request, *args, **kwargs)
 

@@ -71,9 +71,38 @@
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
+                    <h4 class="card-title">Grand Total</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"> Grand Total Claim </th>
+                                    <th scope="col"> Grand Total Pajak </th>
+                                    <th scope="col"> Grand Total Potongan </th>
+                                    <th scope="col"> Grand Total MCM </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{nominal.nominal|floatformat:0|intcomma}}</td>
+                                    <td>{{pot_pajak.pot_pajak|floatformat:0|intcomma}}</td>
+                                    <td>{{pot_bank.pot_bank|floatformat:0|intcomma}}</td>
+                                    <td>{{bayar.bayar|floatformat:0|intcomma}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
                     <h4 class="card-title">{{table_title}}</h4>
                     <div class="table-responsive">
-                        <table class="table table-hover" id="myTable1">
+                        <table class="table table-hover" id="myTable3">
                             <thead>
                                 <tr>
                                     <th> Nomor List Of Claim </th>

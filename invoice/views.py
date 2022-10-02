@@ -534,11 +534,17 @@ def reportMCM(request):
     return render(request, 'invoice/report.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['cashier'])
 def resultMCM(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
     invoices = Invoice.objects.filter(
         mcm_date__range=[tanggal_mulai, tanggal_akhir])
+    nominal = invoices.aggregate(nominal=Sum('nominal'))
+    pot_pajak = invoices.aggregate(pot_pajak=Sum('pot_pajak'))
+    pot_bank = invoices.aggregate(pot_bank=Sum('pot_bank'))
+    bayar = invoices.aggregate(bayar=Sum('bayar'))
     # print(tanggal_mulai, tanggal_akhir, invoices)
     context = {
         'title': 'Result MCM',
@@ -546,6 +552,10 @@ def resultMCM(request):
         'invoices': invoices,
         'tanggal_mulai': tanggal_mulai,
         'tanggal_akhir': tanggal_akhir,
+        'pot_pajak': pot_pajak,
+        'nominal': nominal,
+        'pot_bank': pot_bank,
+        'bayar': bayar,
     }
     return render(request, 'invoice/result.html', context)
 # end cashier
@@ -648,6 +658,31 @@ def resultPayment(request):
     }
     return render(request, 'invoice/result.html', context)
 # end Payment
+
+
+# Payroll
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['payroll'])
+def dashboardPayroll(request):
+    department = request.user.username
+    invoices = Invoice.objects.all()
+
+    total_invoice = invoices.count()
+    listofclaim = invoices.filter(status='List Of Claim').count()
+    invoicing = invoices.filter(status='Invoice').count()
+    mcm = invoices.filter(status='MCM').count()
+    payment = invoices.filter(status='Payment').count()
+    context = {
+        'invoice': invoices,
+        'total_invoice': total_invoice,
+        'listofclaim': listofclaim,
+        'invoicing': invoicing,
+        'mcm': mcm,
+        'payment': payment,
+        'department': department,
+    }
+    return render(request, 'invoice/dashboard.html', context)
+# End Payroll
 
 
 # View superuser

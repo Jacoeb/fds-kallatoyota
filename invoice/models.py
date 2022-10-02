@@ -33,7 +33,7 @@ class Account(models.Model):
             ('User Cashier', 'User Cashier'),
             ('User Payment', 'User Payment'),
             ('User Payroll', 'User Payroll'),
-            ('User Kompensasi', 'User Kompensasi'),
+            ('User Accounting', 'User Accounting'),
         ]
     )
 

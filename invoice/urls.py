@@ -47,6 +47,9 @@ urlpatterns = [
     path('payment/post_payment/<str:pk>',
          views.post_payment, name='post_payment'),
 
+    # Admin Payroll
+    path('admin_payroll/', views.dashboardPayroll, name='dashboard_payroll'),
+
     # SuperUser
     path('invoice/', views.invoice, name='invoice'),
     path('invoice/add_invoice', views.add_invoice, name='add_invoice'),
