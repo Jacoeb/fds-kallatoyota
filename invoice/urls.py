@@ -50,6 +50,8 @@ urlpatterns = [
     # Admin Payroll
     path('admin_payroll/', views.dashboardPayroll, name='dashboard_payroll'),
     path('payroll/', views.payroll, name='payroll'),
+    path('payroll/post_payroll/<str:pk>',
+         views.post_payroll, name='post_payroll'),
 
     # Admin Accounting
     path('admin_accounting/', views.dashboardAccounting,

@@ -80,6 +80,30 @@
                 </form>
             </div>
             <!-- end post payment -->
+            {% elif request.user.account.group_user == 'User Payroll' %}
+            <!-- Post Payroll (Payroll) -->
+            <div class="card-body">
+                <form method="post" class="forms-sample" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.payment_create_date}}
+                    <input type="hidden" name="id_invoice" value="{{invoice.id}}">
+                    <input type="hidden" name="status" value="Invoice">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">File CSV</label>
+                        <div class="col-sm-4">
+                            {% if invoice.get_filecsv_url != None %}
+                            <p style="font-size: 11px ;">
+                                Currently : <a href="{{invoice.get_filecsv_url}}" download>{{lampiran}}</a>
+                            </p>
+                            {% endif %}
+                            {{form.filecsv}}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary me-2">Apply</button>
+                    <button type="button" class="btn btn-light" onclick="history.back()">Cancel</button>
+                </form>
+            </div>
+            <!-- end post payroll -->
             {% endif %}
         </div>
     </div>

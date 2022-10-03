@@ -85,6 +85,7 @@ class Invoice(models.Model):
     no_payment = models.CharField(max_length=255, null=True, blank=True)
     payment_date = models.DateField(null=True, blank=True)
     payment_create_date = models.DateField(null=True, blank=True)
+    payroll_create_date = models.DateField(null=True, blank=True)
     buktitransfer = models.FileField(
         upload_to=file_path_buktitransfer, blank=True)
     estimasi_bayar = models.DateField(null=True, blank=True)

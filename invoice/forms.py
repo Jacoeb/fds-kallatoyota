@@ -349,3 +349,25 @@ class postPaymentForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class postPayrollForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = (
+            'payroll_create_date',
+            'filecsv',
+            'status',
+        )
+        widgets = {
+            'filecsv': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'payroll_create_date': forms.TextInput(
+                attrs={
+                    'type': 'hidden',
+                }
+            ),
+        }

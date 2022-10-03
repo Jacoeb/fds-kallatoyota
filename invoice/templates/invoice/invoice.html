@@ -153,7 +153,7 @@
     <h3 class="page-title">
       <span class="page-title-icon bg-gradient-primary text-white me-2">
         <i class="mdi mdi-file-import"></i>
-      </span> Invoice
+      </span> MCM
     </h3>
     <nav aria-label="breadcrumb">
       <!-- <ul class="breadcrumb">
@@ -196,9 +196,15 @@
                   <td><a href="{% url 'detail_mcm' invoice.id %}"><button type="button"
                         class="btn btn-inverse-primary btn-rounded btn-icon" title="Detail"><i
                           class="mdi mdi-magnify"></i></button></a>
+                    {% if invoice.get_filecsv_url == None %}
                     <a href="{{invoice.get_attachment_url}}" download><button type="button"
                         class="btn btn-inverse-info btn-rounded btn-icon" title="Attachment"><i
                           class="mdi mdi-file-document"></i></button></a>
+                    {% elif invoice.get_filecsv_url != None %}
+                    <a href="{{invoice.get_filecsv_url}}" download><button type="button"
+                        class="btn btn-inverse-info btn-rounded btn-icon" title="CSV Payroll"><i
+                          class="mdi mdi-file-document"></i></button></a>
+                    {% endif %}
                     <a href="{% url 'post_mcm' invoice.id %}"><button type="button"
                         onclick="return confirm('Are you sure want to confirm this invoice?')"
                         class="btn btn-inverse-secondary btn-rounded btn-icon" title="Done"><i
@@ -317,7 +323,7 @@
                     <a href="{{invoice.get_attachment_url}}" download><button type="button"
                         class="btn btn-inverse-info btn-rounded btn-icon" title="Attachment"><i
                           class="mdi mdi-file-document"></i></button></a>
-                    <a href="{% url 'post_tipe' invoice.id %}"><button type="button"
+                    <a href="{% url 'post_payroll' invoice.id %}"><button type="button"
                         class="btn btn-inverse-secondary btn-rounded btn-icon" title="Done"><i
                           class="mdi mdi-check"></i></button></a>
                   </td>

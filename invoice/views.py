@@ -590,11 +590,9 @@ def dashboardPayment(request):
 def payment(request):
     invoices = Invoice.objects.filter(status='MCM')
     # print ('invoice :',invoice)
-    form = TipePostForm()
 
     context = {
         'invoice': invoices,
-        'form': form,
     }
     return render(request, 'invoice/invoice.html', context)
 
@@ -689,13 +687,44 @@ def dashboardPayroll(request):
 def payroll(request):
     invoices = Invoice.objects.filter(status='Payroll')
     # print ('invoice :',invoice)
-    form = TipePostForm()
 
     context = {
         'invoice': invoices,
-        'form': form,
     }
     return render(request, 'invoice/invoice.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['payroll'])
+def post_payroll(request, pk):
+    invoice = Invoice.objects.get(id=pk)
+    lampiran = invoice.filecsv
+    today = date.today()
+    data = {
+        'payroll_create_date': today,
+    }
+    form = postPayrollForm(request.POST or None,
+                           request.FILES or None, instance=invoice, initial=data)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+        # no_payment = request.POST.get('no_payment')
+        # payment_date = request.POST.get('payment_date')
+        # print(pk, no_payment, payment_date, payment_create_date)
+        # Invoice.objects.filter(id=pk).update(
+        #     no_payment=no_payment, payment_date=payment_date, payment_create_date=payment_create_date, status='Payment')
+        return redirect('payroll')
+
+        # if form.is_valid():
+        #     form.save()
+    context = {
+        'form': form,
+        'invoice': invoice,
+        'lampiran': lampiran,
+        'today': today,
+        'title': 'Apply & Post Tipe Transaksi',
+    }
+    return render(request, 'invoice/post_tipe.html', context)
 
 
 @login_required(login_url='login')
