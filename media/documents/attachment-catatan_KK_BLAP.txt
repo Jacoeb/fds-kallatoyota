@@ -1,8 +1,0 @@
-1. Wilayah (Form Pengajuan User.xlsx) - Done
-2. Ada Aging untuk Sheet kak Ani (Aging Invoice to MCM)
-3. Sheet k Ria, Tambah Vendor Samping Kolom Referensi, tanggal bayar (mcm), tanggal input payment
-4. 
-
-- Sheet K Ani -> Biaya Admin Bank
-- Aging - Invoicing to Uang Keluar
-- KK khusus untuk Akbar
