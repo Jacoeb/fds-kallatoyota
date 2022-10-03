@@ -68,6 +68,7 @@ class Invoice(models.Model):
     tipe = models.CharField(max_length=255, null=True, choices=TIPE)
     no_pr = models.CharField(max_length=255, null=True, blank=True)
     nama_vendor = models.CharField(max_length=255, null=True)
+    site_vendor = models.CharField(max_length=255, null=True)
     deskripsi = models.TextField(null=True, blank=True)
     nominal = models.FloatField(max_length=255, null=True, default=0)
     pot_pajak = models.FloatField(max_length=255, null=True, default=0)

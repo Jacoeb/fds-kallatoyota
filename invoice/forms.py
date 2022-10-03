@@ -251,6 +251,7 @@ class InvoiceFormAdmin(ModelForm):
         model = Invoice
         fields = ('no_invoice',
                   'nama_vendor',
+                  'site_vendor',
                   'no_pr',
                   'deskripsi',
                   'attachment',
@@ -270,6 +271,11 @@ class InvoiceFormAdmin(ModelForm):
                 }
             ),
             'nama_vendor': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'site_vendor': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                 }
