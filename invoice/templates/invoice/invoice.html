@@ -202,7 +202,7 @@
                           class="mdi mdi-file-document"></i></button></a>
                     {% elif invoice.get_filecsv_url != None %}
                     <a href="{{invoice.get_filecsv_url}}" download><button type="button"
-                        class="btn btn-inverse-info btn-rounded btn-icon" title="CSV Payroll"><i
+                        class="btn btn-inverse-danger btn-rounded btn-icon" title="CSV Payroll"><i
                           class="mdi mdi-file-document"></i></button></a>
                     {% endif %}
                     <a href="{% url 'post_mcm' invoice.id %}"><button type="button"
@@ -388,7 +388,8 @@
                     <a href="{{invoice.get_attachment_url}}" download><button type="button"
                         class="btn btn-inverse-info btn-rounded btn-icon" title="Attachment"><i
                           class="mdi mdi-file-document"></i></button></a>
-                    <a href="{% url 'post_tipe' invoice.id %}"><button type="button"
+                    <a href="{% url 'post_kompensasi' invoice.id %}"><button type="button"
+                        onclick="return confirm('Are you sure want to confirm this invoice?')"
                         class="btn btn-inverse-secondary btn-rounded btn-icon" title="Done"><i
                           class="mdi mdi-check"></i></button></a>
                   </td>

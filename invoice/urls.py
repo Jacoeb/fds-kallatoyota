@@ -57,6 +57,8 @@ urlpatterns = [
     path('admin_accounting/', views.dashboardAccounting,
          name='dashboard_accounting'),
     path('accounting/', views.accounting, name='accounting'),
+    path('accounting/post_kompensasi/<str:pk>/',
+         views.post_kompensasi, name='post_kompensasi'),
 
     # SuperUser
     path('invoice/', views.invoice, name='invoice'),

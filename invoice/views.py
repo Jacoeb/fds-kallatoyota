@@ -742,7 +742,7 @@ def resultPayroll(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
     invoices = Invoice.objects.filter(
-        payment_date__range=[tanggal_mulai, tanggal_akhir])
+        payroll_date__range=[tanggal_mulai, tanggal_akhir])
     # print(tanggal_mulai, tanggal_akhir, invoices)
     context = {
         'title': 'Result Payroll',
@@ -795,6 +795,15 @@ def accounting(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['accounting'])
+def post_kompensasi(request, pk):
+    today = date.today()
+    Invoice.objects.filter(id=pk).update(
+        status="Payment", kompensasi_create_date=today)
+    return redirect('accounting')
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['accounting'])
 def reportAccounting(request):
     context = {
         'title': 'Report Kompensasi',
@@ -808,7 +817,7 @@ def resultAccounting(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
     invoices = Invoice.objects.filter(
-        payment_date__range=[tanggal_mulai, tanggal_akhir])
+        kompensasi_date__range=[tanggal_mulai, tanggal_akhir])
     # print(tanggal_mulai, tanggal_akhir, invoices)
     context = {
         'title': 'Result Kompensasi',

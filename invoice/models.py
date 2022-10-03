@@ -74,6 +74,7 @@ class Invoice(models.Model):
     pot_pajak = models.FloatField(max_length=255, null=True, default=0)
     pot_bank = models.FloatField(max_length=255, null=True, default=0)
     kompensasi = models.BooleanField('Kompensasi', default=False)
+    kompensasi_create_date = models.DateField(null=True, blank=True)
     bayar = models.FloatField(max_length=255, null=True, default=0)
     attachment = models.FileField(upload_to=file_path, blank=True)
     jenis = models.CharField(max_length=255, null=True,

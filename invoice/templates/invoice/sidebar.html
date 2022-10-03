@@ -116,12 +116,12 @@
                 <i class="mdi mdi mdi-file-import menu-icon"></i>
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" href="{% url 'report_payroll' %}">
                 <span class="menu-title">Report</span>
                 <i class="mdi mdi-file-pdf menu-icon"></i>
             </a>
-        </li>
+        </li> -->
         <!-- End Menu Payroll -->
 
         {% elif request.user.account.group_user == 'User Accounting' %}
@@ -139,12 +139,12 @@
                 <i class="mdi mdi mdi-file-import menu-icon"></i>
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" href="{% url 'report_accounting' %}">
                 <span class="menu-title">Report</span>
                 <i class="mdi mdi-file-pdf menu-icon"></i>
             </a>
-        </li>
+        </li> -->
         <!-- End Menu Accounting -->
 
         {% else %}
