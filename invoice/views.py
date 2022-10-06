@@ -75,13 +75,15 @@ def dashboardUser(request):
     listofclaim = invoices.filter(
         status='List Of Claim', user=department).count()
     invoicing = invoices.filter(status='Invoice', user=department).count()
-    payroll = invoices.filter(status='Payroll', user=department).count()
-    total_invoice_payroll = invoicing + payroll
     mcm = invoices.filter(status='MCM', user=department).count()
     payment = invoices.filter(status='Payment', user=department).count()
+    payroll = invoices.filter(status='Payroll', user=department).count()
+    total_invoice_payroll = invoicing + payroll
     payment_cabang = invoices.filter(
         status='Payment Cabang', user=department).count()
-    total_payment = payment + payment_cabang
+    payment_kompensasi = invoices.filter(
+        status='Payment Kompensasi', user=department).count()
+    total_payment = payment + payment_cabang + payment_kompensasi
     context = {
         'invoice': invoices,
         'total_invoice': total_invoice,
@@ -812,7 +814,7 @@ def accounting(request):
 def post_kompensasi(request, pk):
     today = date.today()
     Invoice.objects.filter(id=pk).update(
-        status="Payment", kompensasi_create_date=today)
+        status="Payment Kompensasi", kompensasi_create_date=today)
     return redirect('accounting')
 
 

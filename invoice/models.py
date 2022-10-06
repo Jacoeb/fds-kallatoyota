@@ -48,6 +48,7 @@ class Invoice(models.Model):
         ('MCM', 'MCM'),
         ('Payment', 'Payment'),
         ('Kompensasi', 'Kompensasi'),
+        ('Payment Kompensasi', 'Payment Kompensasi'),
         ('Payment Cabang', 'Payment Cabang'),
         ('Payroll', 'Payroll'),
     )
