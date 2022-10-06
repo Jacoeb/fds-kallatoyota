@@ -75,9 +75,12 @@ def dashboardUser(request):
     listofclaim = invoices.filter(
         status='List Of Claim', user=department).count()
     invoicing = invoices.filter(status='Invoice', user=department).count()
+    payroll = invoices.filter(status='Payroll', user=department).count()
+    total_invoice_payroll = invoicing + payroll
     mcm = invoices.filter(status='MCM', user=department).count()
     payment = invoices.filter(status='Payment', user=department).count()
-    payment_cabang = invoices.filter(status='Payment Cabang').count()
+    payment_cabang = invoices.filter(
+        status='Payment Cabang', user=department).count()
     total_payment = payment + payment_cabang
     context = {
         'invoice': invoices,
@@ -88,6 +91,7 @@ def dashboardUser(request):
         'payment': payment,
         'department': department,
         'total_payment': total_payment,
+        'total_invoice_payroll': total_invoice_payroll,
     }
     return render(request, 'invoice/dashboard.html', context)
 
@@ -260,7 +264,7 @@ def dashboardInvoice(request):
     mcm = invoices.filter(status='MCM').count()
     payment = invoices.filter(status='Payment').count()
     payment_cabang = invoices.filter(status='Payment Cabang').count()
-    total_payment = float(payment) + float(payment_cabang)
+    total_payment = payment + payment_cabang
     print(total_payment)
     context = {
         'invoice': invoices,
