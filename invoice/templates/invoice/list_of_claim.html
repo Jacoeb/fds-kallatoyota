@@ -53,6 +53,10 @@
                                     <td>{{invoice.status}}</td>
                                     {% if invoice.status == 'Payment' %}
                                     <td>{{invoice.bayar|floatformat:0|intcomma}}</td>
+                                    {% elif invoice.status == 'Payment Kompensasi' %}
+                                    <td>{{invoice.bayar|floatformat:0|intcomma}}</td>
+                                    {% elif invoice.status == 'Payment Cabang' %}
+                                    <td>{{invoice.bayar|floatformat:0|intcomma}}</td>
                                     {% else %}
                                     <td>0</td>
                                     {% endif %}

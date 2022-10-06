@@ -813,6 +813,9 @@ def accounting(request):
 @ allowed_users(allowed_roles=['accounting'])
 def post_kompensasi(request, pk):
     today = date.today()
+    # invoice = Invoice.objects.filter(id=pk)
+    # bayar = invoice.bayar
+    # print(bayar, today)
     Invoice.objects.filter(id=pk).update(
         status="Payment Kompensasi", kompensasi_create_date=today)
     return redirect('accounting')
