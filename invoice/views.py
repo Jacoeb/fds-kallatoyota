@@ -77,6 +77,8 @@ def dashboardUser(request):
     invoicing = invoices.filter(status='Invoice', user=department).count()
     mcm = invoices.filter(status='MCM', user=department).count()
     payment = invoices.filter(status='Payment', user=department).count()
+    payment_cabang = invoices.filter(status='Payment Cabang').count()
+    total_payment = payment + payment_cabang
     context = {
         'invoice': invoices,
         'total_invoice': total_invoice,
@@ -85,6 +87,7 @@ def dashboardUser(request):
         'mcm': mcm,
         'payment': payment,
         'department': department,
+        'total_payment': total_payment,
     }
     return render(request, 'invoice/dashboard.html', context)
 
@@ -256,6 +259,9 @@ def dashboardInvoice(request):
     invoicing = invoices.filter(status='Invoice').count()
     mcm = invoices.filter(status='MCM').count()
     payment = invoices.filter(status='Payment').count()
+    payment_cabang = invoices.filter(status='Payment Cabang').count()
+    total_payment = float(payment) + float(payment_cabang)
+    print(total_payment)
     context = {
         'invoice': invoices,
         'total_invoice': total_invoice,
@@ -263,13 +269,14 @@ def dashboardInvoice(request):
         'invoicing': invoicing,
         'mcm': mcm,
         'payment': payment,
-        'department': department
+        'department': department,
+        'total_payment': total_payment,
     }
     return render(request, 'invoice/dashboard.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin_invoice'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['admin_invoice'])
 def invoicing(request):
     invoices = Invoice.objects.filter(status='List Of Claim')
     # print ('invoice :',invoice)
@@ -282,8 +289,8 @@ def invoicing(request):
     return render(request, 'invoice/invoice.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin_invoice'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['admin_invoice'])
 def add_invoice_admin(request):
     form = InvoiceFormAdmin(request.POST or None,
                             request.FILES or None)
@@ -311,8 +318,8 @@ def add_invoice_admin(request):
 #     return render(request, 'invoice/detail_listofclaim.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin_invoice'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['admin_invoice'])
 def update_invoice_admin(request, pk):
     invoice = Invoice.objects.get(id=pk)
     lampiran = invoice.attachment
@@ -333,15 +340,15 @@ def update_invoice_admin(request, pk):
     return render(request, 'invoice/invoice_form.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin_invoice'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['admin_invoice'])
 def delete_invoice_admin(request, pk):
     Invoice.objects.filter(id=pk).delete()
     return redirect('invoicing')
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin_invoice'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['admin_invoice'])
 def post_tipe(request, pk):
     invoice = Invoice.objects.get(id=pk)
     form = TipePostForm(request.POST or None, instance=invoice)
@@ -378,8 +385,8 @@ def post_tipe(request, pk):
     return render(request, 'invoice/post_tipe.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin_invoice'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['admin_invoice'])
 def reportInvoice(request):
     context = {
         'title': 'Report Invoice',
@@ -387,8 +394,8 @@ def reportInvoice(request):
     return render(request, 'invoice/report.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin_invoice'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['admin_invoice'])
 def resultInvoice(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
@@ -408,8 +415,8 @@ def resultInvoice(request):
 
 
 # View Admin Cashier
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['cashier'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
 def dashboardCashier(request):
     department = request.user.username
     invoices = Invoice.objects.all()
@@ -431,8 +438,8 @@ def dashboardCashier(request):
     return render(request, 'invoice/dashboard.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['cashier'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
 def mcm(request):
     invoices = Invoice.objects.filter(status='Invoice', kompensasi=False)
     # print ('invoice :',invoice)
@@ -445,8 +452,8 @@ def mcm(request):
     return render(request, 'invoice/invoice.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['cashier'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
 def detail_mcm(request, pk):
     invoices = Invoice.objects.get(id=pk)
     # no_invoice = invoices.no_invoice
@@ -477,8 +484,8 @@ def detail_mcm(request, pk):
     return render(request, 'invoice/detail_listofclaim.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['cashier'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
 def add_biaya_admin(request, pk):
     bank = Bank.objects.get(id=pk)
     invoice_id = bank.invoice
@@ -506,8 +513,8 @@ def add_biaya_admin(request, pk):
     return render(request, 'invoice/post_biaya_admin.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['cashier'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
 def post_mcm(request, pk):
     invoice = Invoice.objects.get(id=pk)
     bank = invoice.bank_set.all()
@@ -525,8 +532,8 @@ def post_mcm(request, pk):
     return redirect('mcm')
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['cashier'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
 def reportMCM(request):
     context = {
         'title': 'Report MCM',
@@ -534,8 +541,8 @@ def reportMCM(request):
     return render(request, 'invoice/report.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['cashier'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
 def resultMCM(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
@@ -562,8 +569,8 @@ def resultMCM(request):
 
 
 # View Admin Payment
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payment'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payment'])
 def dashboardPayment(request):
     department = request.user.username
     invoices = Invoice.objects.all()
@@ -585,8 +592,8 @@ def dashboardPayment(request):
     return render(request, 'invoice/dashboard.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payment'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payment'])
 def payment(request):
     invoices = Invoice.objects.filter(status='MCM')
     # print ('invoice :',invoice)
@@ -597,8 +604,8 @@ def payment(request):
     return render(request, 'invoice/invoice.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payment'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payment'])
 def post_payment(request, pk):
     invoice = Invoice.objects.get(id=pk)
     lampiran = invoice.buktitransfer
@@ -630,8 +637,8 @@ def post_payment(request, pk):
     return render(request, 'invoice/post_tipe.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payment'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payment'])
 def reportPayment(request):
     context = {
         'title': 'Report Payment'
@@ -639,8 +646,8 @@ def reportPayment(request):
     return render(request, 'invoice/report.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payment'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payment'])
 def resultPayment(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
@@ -659,8 +666,8 @@ def resultPayment(request):
 
 
 # Payroll
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payroll'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payroll'])
 def dashboardPayroll(request):
     department = request.user.username
     invoices = Invoice.objects.all()
@@ -682,8 +689,8 @@ def dashboardPayroll(request):
     return render(request, 'invoice/dashboard.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payroll'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payroll'])
 def payroll(request):
     invoices = Invoice.objects.filter(status='Payroll')
     # print ('invoice :',invoice)
@@ -694,8 +701,8 @@ def payroll(request):
     return render(request, 'invoice/invoice.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payroll'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payroll'])
 def post_payroll(request, pk):
     invoice = Invoice.objects.get(id=pk)
     lampiran = invoice.filecsv
@@ -727,8 +734,8 @@ def post_payroll(request, pk):
     return render(request, 'invoice/post_tipe.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payroll'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payroll'])
 def reportPayroll(request):
     context = {
         'title': 'Report Payroll'
@@ -736,8 +743,8 @@ def reportPayroll(request):
     return render(request, 'invoice/report.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['payroll'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['payroll'])
 def resultPayroll(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
@@ -756,8 +763,8 @@ def resultPayroll(request):
 
 
 # Accounting
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['accounting'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['accounting'])
 def dashboardAccounting(request):
     department = request.user.username
     invoices = Invoice.objects.all()
@@ -767,6 +774,8 @@ def dashboardAccounting(request):
     invoicing = invoices.filter(status='Invoice').count()
     mcm = invoices.filter(status='MCM').count()
     payment = invoices.filter(status='Payment').count()
+    payment_cabang = invoices.filter(status='Payment Cabang').count()
+    total_payment = payment + payment_cabang
     context = {
         'invoice': invoices,
         'total_invoice': total_invoice,
@@ -775,12 +784,13 @@ def dashboardAccounting(request):
         'mcm': mcm,
         'payment': payment,
         'department': department,
+        'total_payment': total_payment,
     }
     return render(request, 'invoice/dashboard.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['accounting'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['accounting'])
 def accounting(request):
     invoices = Invoice.objects.filter(status='Kompensasi')
     # print ('invoice :',invoice)
@@ -793,8 +803,8 @@ def accounting(request):
     return render(request, 'invoice/invoice.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['accounting'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['accounting'])
 def post_kompensasi(request, pk):
     today = date.today()
     Invoice.objects.filter(id=pk).update(
@@ -802,8 +812,8 @@ def post_kompensasi(request, pk):
     return redirect('accounting')
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['accounting'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['accounting'])
 def reportAccounting(request):
     context = {
         'title': 'Report Kompensasi',
@@ -811,8 +821,8 @@ def reportAccounting(request):
     return render(request, 'invoice/report.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['accounting'])
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['accounting'])
 def resultAccounting(request):
     tanggal_mulai = request.POST.get('tanggal_mulai')
     tanggal_akhir = request.POST.get('tanggal_akhir')
