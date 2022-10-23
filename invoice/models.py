@@ -141,3 +141,12 @@ class Bank(models.Model):
 
     def __str__(self):
         return self.no_rekening
+
+
+class PaymentTerm(models.Model):
+    invoice = models.ForeignKey(
+        Invoice, null=True, on_delete=models.CASCADE, related_name='+')
+    tahap = models.CharField(max_length=255, null=True)
+    nominal = models.FloatField(max_length=255, null=True, default=0)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    date_updated = models.DateTimeField(auto_now=True, null=True)

@@ -37,6 +37,8 @@ urlpatterns = [
     path('mcm/', views.mcm, name='mcm'),
     path('mcm/detail_mcm/<str:pk>',
          views.detail_mcm, name='detail_mcm'),
+    path('mcm/add_payment_term/<str:pk>/',
+         views.add_payment_term, name='add_payment_term'),
     path('mcm/post_biaya_admin/<str:pk>/',
          views.add_biaya_admin, name='add_biaya_admin'),
     path('mcm/post_mcm/<str:pk>/', views.post_mcm, name='post_mcm'),

@@ -11,6 +11,17 @@
                 <i class="mdi mdi-file-import"></i>
             </span> Detail Invoice
         </h3>
+        {% if invoice.status == 'Invoice' %}
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'add_payment_term' invoice.id %}" type="button"
+                        class="btn btn-gradient-primary btn-icon-text">
+                        <i class="mdi mdi-plus btn-icon-prepend"></i> Tambah Pembayaran </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
     </div>
     <div class="row">
         <div class="col-md-3 grid-margin">
@@ -327,6 +338,44 @@
 
                                     </td>
                                     {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    {% if invoice.status == 'List Of Claim' %}
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{form.estimasi_bayar}}
+                        <input type="hidden" name="nominal" value="{{nominal.nominal}}">
+                        <button type="submit" class="btn btn-inverse-primary btn-icon-text"><i
+                                class="mdi mdi-check btn-icon-prepend"></i>
+                            Apply</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Daftar Pembayaran</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th> Tahap Pembayaran </th>
+                                    <th> Nilai Pembayaran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for bayar in paymentterm %}
+                                <tr>
+                                    <td>{{bayar.tahap}}</td>
+                                    <td>{{bayar.nominal|floatformat:0|intcomma}}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

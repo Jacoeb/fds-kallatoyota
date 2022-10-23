@@ -168,8 +168,11 @@ def detail_listofclaim(request, pk):
     invoices = Invoice.objects.get(id=pk)
     # no_invoice = invoices.no_invoice
     bank = invoices.bank_set.all()
+    paymentterm = PaymentTerm.objects.all().filter(invoice=pk)
+    # paymentterm = PaymentTerm.objects.all().prefetch_related(
+    #     'invoice').filter(invoice=pk)
     total_bank = bank.count()
-    # print(total_bank)
+    # print(paymentterm)
     if (total_bank >= 1):
         estimasi_bayar = date.today() + datetime.timedelta(days=20)
         data = {
@@ -202,6 +205,7 @@ def detail_listofclaim(request, pk):
         'nominal': nominal,
         'form': form,
         'bayar': bayar,
+        'paymentterm': paymentterm,
     }
     return render(request, 'invoice/detail_listofclaim.html', context)
 
@@ -488,6 +492,24 @@ def detail_mcm(request, pk):
         'bayar': bayar,
     }
     return render(request, 'invoice/detail_listofclaim.html', context)
+
+
+@ login_required(login_url='login')
+@ allowed_users(allowed_roles=['cashier'])
+def add_payment_term(request, pk):
+    invoices = Invoice.objects.get(id=pk)
+    form = BankFormDetail(initial={'invoice': invoices})
+    if request.method == 'POST':
+        form = BankFormDetail(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('detail_listofclaim', pk)
+    context = {
+        'title': 'Tambah Bank',
+        'invoice': invoices,
+        'form': form,
+    }
+    return render(request, 'invoice/bank_form.html', context)
 
 
 @ login_required(login_url='login')
