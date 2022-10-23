@@ -466,6 +466,7 @@ def mcm(request):
 @ allowed_users(allowed_roles=['cashier'])
 def detail_mcm(request, pk):
     invoices = Invoice.objects.get(id=pk)
+    paymentterm = PaymentTerm.objects.all().filter(invoice=pk)
     # no_invoice = invoices.no_invoice
     bank = invoices.bank_set.all()
     total_bank = bank.count()
@@ -490,6 +491,7 @@ def detail_mcm(request, pk):
         'nominal': nominal,
         # 'form': form,
         'bayar': bayar,
+        'paymentterm': paymentterm,
     }
     return render(request, 'invoice/detail_listofclaim.html', context)
 
@@ -498,18 +500,18 @@ def detail_mcm(request, pk):
 @ allowed_users(allowed_roles=['cashier'])
 def add_payment_term(request, pk):
     invoices = Invoice.objects.get(id=pk)
-    form = BankFormDetail(initial={'invoice': invoices})
+    form = paymentTermForm(initial={'invoice': invoices})
     if request.method == 'POST':
-        form = BankFormDetail(request.POST)
+        form = paymentTermForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('detail_listofclaim', pk)
+            return redirect('detail_mcm', pk)
     context = {
-        'title': 'Tambah Bank',
+        'title': 'Tambah Pembayaran',
         'invoice': invoices,
         'form': form,
     }
-    return render(request, 'invoice/bank_form.html', context)
+    return render(request, 'invoice/paymentterm_form.html', context)
 
 
 @ login_required(login_url='login')

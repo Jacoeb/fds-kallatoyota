@@ -371,3 +371,30 @@ class postPayrollForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class paymentTermForm(forms.ModelForm):
+    class Meta:
+        model = PaymentTerm
+        fields = (
+            'tahap',
+            'nominal',
+            'invoice',
+        )
+        widgets = {
+            'invoice': forms.TextInput(
+                attrs={
+                    'type': 'hidden',
+                }
+            ),
+            'tahap': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'nominal': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            )
+        }
